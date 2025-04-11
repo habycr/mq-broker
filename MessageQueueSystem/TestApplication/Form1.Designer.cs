@@ -297,7 +297,7 @@
             // 
             label7.AutoSize = true;
             label7.ImeMode = ImeMode.NoControl;
-            label7.Location = new Point(7, 76);
+            label7.Location = new Point(-3, 76);
             label7.Name = "label7";
             label7.Size = new Size(199, 20);
             label7.TabIndex = 4;

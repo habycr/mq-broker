@@ -36,8 +36,8 @@ namespace TestApplication
             listView1.View = View.Details;
             listView1.FullRowSelect = true;
             listView1.GridLines = true;
-            listView1.Columns.Add("Tema", 260);
-            listView1.Columns.Add("Estado", 102);
+            //listView1.Columns.Add("Tema", 260);
+            //listView1.Columns.Add("Estado", 102);
 
             // En el método Initialize() o LoadSampleTopics():
             comboBox1.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
@@ -50,9 +50,9 @@ namespace TestApplication
             // Configurar ListView de mensajes recibidos
             listView2.View = View.Details;
             listView2.FullRowSelect = true;
-            listView2.Columns.Add("Tema", 80);
-            listView2.Columns.Add("Contenido", 180);
-            listView2.Columns.Add("Fecha/Hora", 102);
+            //listView2.Columns.Add("Tema", 80);
+            //listView2.Columns.Add("Contenido", 180);
+            //listView2.Columns.Add("Fecha/Hora", 102);
             // Estado inicial
             UpdateStatus("Desconectado");
             EnableControls(false);
