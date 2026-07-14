@@ -1,8 +1,18 @@
-# Publish–Subscribe Message Queue Broker
+# Message Queue Broker
 
-> An in-memory publish–subscribe message broker implemented in C# with TCP communication, custom generic data structures, FIFO delivery queues, concurrent request handling, and a Windows Forms test client.
+> An in-memory publish–subscribe message broker implemented in C# with
+> TCP communication, custom generic data structures, FIFO delivery
+> queues, concurrent request handling, and a Windows Forms test client.
 
-This project was developed collaboratively for a **Data Structures I** course at the **Instituto Tecnológico de Costa Rica**. It demonstrates the design of a small message-oriented middleware system without relying on built-in collection classes for the broker's core storage.
+This project was developed collaboratively for
+**CE1103 — Algoritmos y Estructuras de Datos I** at the
+**Instituto Tecnológico de Costa Rica**.
+
+The system demonstrates the design of a small message-oriented middleware
+platform using TCP sockets, custom collection implementations, concurrent
+request processing, and independent message queues for each subscriber.
+
+The current desktop interface is available in Spanish.
 
 <p align="center">
   <img src="docs/images/interfaz.png" alt="Message Queue Test Application" width="82%">
@@ -62,60 +72,39 @@ The implementation is divided into three .NET projects:
 
 ## System Architecture
 
-```text
-┌─────────────────────────────┐
-│ Windows Forms Test Client   │
-│ TestApplication / Form1     │
-└──────────────┬──────────────┘
-               │ uses
-               ▼
-┌─────────────────────────────┐
-│ MQClient API                │
-│ Topic, Message, exceptions  │
-└──────────────┬──────────────┘
-               │ TCP requests and responses
-               ▼
-┌─────────────────────────────┐
-│ MQBroker                    │
-│ 127.0.0.1:5000              │
-├─────────────────────────────┤
-│ Topic → subscribers         │
-│ Topic → client → FIFO queue │
-└─────────────────────────────┘
-```
+The system is divided into a Windows Forms client, a reusable client API,
+and a TCP message broker responsible for subscriptions and message delivery.
 
-The client opens a TCP connection for each request. The broker accepts the connection, delegates its processing to the `ThreadPool`, parses the command, updates or queries the in-memory state, and returns a text response.
+<p align="center">
+  <img
+    src="docs/images/message-queue-architecture.png"
+    alt="Message Queue Broker system architecture"
+    width="100%">
+</p>
+
+The Windows Forms application uses the `MQClient` API to send operations to
+the broker through TCP. The broker maintains a subscription registry and an
+independent FIFO message queue for every subscribed client.
 
 ## Message Flow
 
-### Publish
+The broker follows a topic-based publish–subscribe model. A published message
+is copied into the independent FIFO queue of every client subscribed to the
+target topic.
 
-```text
-Publisher
-   │
-   │ PUBLISH|topic|message|appId
-   ▼
-MQBroker
-   │
-   ├── enqueue copy → Subscriber A queue
-   ├── enqueue copy → Subscriber B queue
-   └── enqueue copy → Subscriber C queue
-```
+<p align="center">
+  <img
+    src="docs/images/message-queue-flow.png"
+    alt="Message Queue Broker publish and receive flow"
+    width="100%">
+</p>
 
-### Receive
+During a receive operation, the broker locates the queue associated with the
+requested topic and `AppID`, removes the oldest available message, and returns
+it to the client.
 
-```text
-Subscriber
-   │
-   │ RECEIVE|topic|appId
-   ▼
-MQBroker
-   │
-   └── dequeue oldest message from that subscriber's queue
-```
-
-This design preserves FIFO order independently for each subscriber.
-
+FIFO order is preserved independently for each subscriber. Receiving a
+message from one queue does not modify the queues of other subscribers.
 ## Class Diagram
 
 The diagram below is a simplified view of the main project classes and their relationships.
@@ -416,11 +405,14 @@ The client translates broker and socket failures into operation-specific excepti
 
 ## Development
 
-This project was developed collaboratively. The original repository and commit history are preserved so that authorship and individual contributions remain visible.
+This project was developed collaboratively by Computer Engineering
+students at Instituto Tecnológico de Costa Rica.
 
-[View the repository contributors](https://github.com/Sarimoca/Proyecto1_Datos1_S1_2025/graphs/contributors)
+- [Antony Javier Hernández Castillo](https://github.com/habycr) 
+- [Samuel Ricardo Morales Cascante](https://github.com/Sarimoca)
 
-**Course:** Data Structures I  
+
+**Course:** CE1103 — Algoritmos y Estructuras de Datos I  
 **Institution:** Instituto Tecnológico de Costa Rica
 
 ## Project Status
