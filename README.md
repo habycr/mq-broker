@@ -113,11 +113,6 @@ The diagram below is a simplified view of the main project classes and their rel
   <img src="docs/images/message-queue-class-diagram.png" alt="Publish-subscribe message queue class diagram" width="100%">
 </p>
 
-The Mermaid source used to generate the image can be stored at:
-
-```text
-docs/diagrams/message-queue-class-diagram.mmd
-```
 
 ## Custom Data Structures
 
